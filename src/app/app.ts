@@ -66,6 +66,13 @@ app.post('/', (req: Request, res: Response) => {
   res.json(data);
 });
 
+//handling 404 error
+// app.all('*', (req: Request, res: Response) => {
+//   res.status(404).json({
+//     message: 'Route not found',
+//   });
+// });
+
 //error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
