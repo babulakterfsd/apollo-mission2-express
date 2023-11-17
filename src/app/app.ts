@@ -29,10 +29,16 @@ testRouter.get('/createtest', (req: Request, res: Response) => {
 //normal get request or a get request with query param
 app.get('/', logger, logger2, (req: Request, res: Response) => {
   //joto iccha middleware use korte paro
-  if (req?.query?.email) {
-    res.send(`Its a GET request from a user whose email is ${req.query.email}`);
-  } else {
-    res.send('Its a GET request');
+  try {
+    if (req?.query?.email) {
+      res.send(
+        `Its a GET request from a user whose email is ${req.query.email}`
+      );
+    } else {
+      res.send('Its a GET request');
+    }
+  } catch (error) {
+    res.send(error);
   }
 });
 
