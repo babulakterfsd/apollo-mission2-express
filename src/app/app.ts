@@ -27,20 +27,26 @@ testRouter.get('/createtest', (req: Request, res: Response) => {
 });
 
 //normal get request or a get request with query param
-app.get('/', logger, logger2, (req: Request, res: Response) => {
-  //joto iccha middleware use korte paro
-  try {
-    if (req?.query?.email) {
-      res.send(
-        `Its a GET request from a user whose email is ${req.query.email}`
-      );
-    } else {
-      res.send('Its a GET request');
+app.get(
+  '/',
+  logger,
+  logger2,
+  (req: Request, res: Response, next: NextFunction) => {
+    //joto iccha middleware use korte paro
+    try {
+      throw new Error('Error from get request'); // testing global error handler
+      if (req?.query?.email) {
+        res.send(
+          `Its a GET request from a user whose email is ${req.query.email}`
+        );
+      } else {
+        res.send('Its a GET request');
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    res.send(error);
   }
-});
+);
 
 //get request with params
 app.get('/:userId', logger, (req: Request, res: Response) => {
@@ -58,6 +64,13 @@ app.get('/:userId/:userSerial', (req: Request, res: Response) => {
 app.post('/', (req: Request, res: Response) => {
   const data = req.body;
   res.json(data);
+});
+
+//error handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).json({
+    message: `${err.message}. This error is handled by global error handler.`,
+  });
 });
 
 export default app;
