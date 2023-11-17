@@ -16,6 +16,16 @@ const logger2 = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
+//routes
+const testRouter = express.Router();
+app.use('/api/v1/test', testRouter);
+
+testRouter.get('/createtest', (req: Request, res: Response) => {
+  res.json({
+    message: 'Test created',
+  });
+});
+
 //normal get request or a get request with query param
 app.get('/', logger, logger2, (req: Request, res: Response) => {
   //joto iccha middleware use korte paro
